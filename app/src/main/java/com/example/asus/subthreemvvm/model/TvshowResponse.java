@@ -1,8 +1,8 @@
 package com.example.asus.subthreemvvm.model;
 
-import java.util.ArrayList;
-import java.util.List;
 import com.google.gson.annotations.SerializedName;
+
+import java.util.ArrayList;
 
 public class TvshowResponse{
 

@@ -5,11 +5,8 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.util.Log;
 
-import com.example.asus.subthreemvvm.model.MovieItem;
-import com.example.asus.subthreemvvm.model.MovieResponse;
 import com.example.asus.subthreemvvm.model.TvshowItem;
 import com.example.asus.subthreemvvm.model.TvshowResponse;
-import com.example.asus.subthreemvvm.service.MovieService;
 import com.example.asus.subthreemvvm.service.TvshowService;
 
 import java.util.ArrayList;

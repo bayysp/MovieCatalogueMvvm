@@ -3,14 +3,11 @@ package com.example.asus.subthreemvvm.viewmodel;
 import android.arch.lifecycle.LiveData;
 import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
-import android.content.Context;
 import android.util.Log;
 
-import com.example.asus.subthreemvvm.R;
 import com.example.asus.subthreemvvm.model.MovieItem;
 import com.example.asus.subthreemvvm.model.MovieResponse;
 import com.example.asus.subthreemvvm.service.MovieService;
-import com.example.asus.subthreemvvm.view.fragment.MovieFragment;
 
 import java.util.ArrayList;
 

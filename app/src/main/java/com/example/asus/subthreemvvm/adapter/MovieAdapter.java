@@ -16,6 +16,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.asus.subthreemvvm.R;
 import com.example.asus.subthreemvvm.model.MovieItem;
+import com.example.asus.subthreemvvm.view.activity.DetailMovieActivity;
 
 import java.util.ArrayList;
 
@@ -29,7 +30,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         this.context = context;
     }
 
-    public void setData(ArrayList<MovieItem> items){
+    public void setData(ArrayList<MovieItem> items) {
         movieItems.clear();
         movieItems.addAll(items);
         notifyDataSetChanged();
@@ -38,7 +39,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     @NonNull
     @Override
     public MovieAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.movie_item,viewGroup,false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.movie_item, viewGroup, false);
         return new ViewHolder(view);
     }
 
@@ -46,32 +47,32 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     public void onBindViewHolder(@NonNull MovieAdapter.ViewHolder viewHolder, int i) {
         final MovieItem item = movieItems.get(i);
 
-        Glide.with(context).load(BASE_URL_IMAGE+item.getPosterPath()).into(viewHolder.ivPoster);
+        Glide.with(context).load(BASE_URL_IMAGE + item.getPosterPath()).into(viewHolder.ivPoster);
         viewHolder.tvTitle.setText(item.getTitle());
         viewHolder.tvRating.setText(String.valueOf(item.getVoteAverage()));
-//        viewHolder.movieView = movieView;
-//
-//        viewHolder.cvFilm.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                try {
-//                    Intent intent = new Intent(context,DetailActivity.class);
-//
-//                    MovieItem items = new MovieItem();
-//                    items.setTitle(item.getTitle());
-//                    items.setPosterPath(BASE_URL_IMAGE+item.getPosterPath());
-//                    items.setOverview(item.getOverview());
-//                    items.setVoteAverage(item.getVoteAverage());
-//                    items.setBackdropPath(item.getBackdropPath());
-//
-//                    intent.putExtra(DetailActivity.DETAIL_MOVIE,items);
-//                    context.startActivity(intent);
-//                }catch (Exception e){
-//                    Log.d("ClickMovie" , "GAGAL KLIK MOVIENYA");
-//                    Toast.makeText(context,"Gagal Menampilkan Detail",Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
+
+        viewHolder.cvFilm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Intent intent = new Intent(context, DetailMovieActivity.class);
+
+                    MovieItem items = new MovieItem();
+                    items.setTitle(item.getTitle());
+                    items.setPosterPath(BASE_URL_IMAGE + item.getPosterPath());
+                    items.setOverview(item.getOverview());
+                    items.setVoteAverage(item.getVoteAverage());
+                    items.setBackdropPath(item.getBackdropPath());
+
+                    intent.putExtra(DetailMovieActivity.DETAIL_MOVIE, items);
+                    context.startActivity(intent);
+                    Log.d("AdapterClickMovie", "MOVE INTO DETAIL ACTIVITY");
+                } catch (Exception e) {
+                    Log.d("AdapterClickMovie", "GAGAL KLIK MOVIENYA");
+                    Toast.makeText(context, "Gagal Menampilkan Detail", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     @Override

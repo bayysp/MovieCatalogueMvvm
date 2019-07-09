@@ -16,11 +16,8 @@ import android.view.ViewGroup;
 import android.widget.ProgressBar;
 
 import com.example.asus.subthreemvvm.R;
-import com.example.asus.subthreemvvm.adapter.MovieAdapter;
 import com.example.asus.subthreemvvm.adapter.TvshowAdapter;
-import com.example.asus.subthreemvvm.model.MovieItem;
 import com.example.asus.subthreemvvm.model.TvshowItem;
-import com.example.asus.subthreemvvm.viewmodel.MovieViewModel;
 import com.example.asus.subthreemvvm.viewmodel.TvshowViewModel;
 
 import java.util.ArrayList;

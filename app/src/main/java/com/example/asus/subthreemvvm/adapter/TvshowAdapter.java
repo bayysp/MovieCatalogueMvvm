@@ -1,18 +1,22 @@
 package com.example.asus.subthreemvvm.adapter;
 
 import android.content.Context;
+import android.content.Intent;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.asus.subthreemvvm.R;
 import com.example.asus.subthreemvvm.model.TvshowItem;
+import com.example.asus.subthreemvvm.view.activity.DetailTvshowActivity;
 
 import java.util.ArrayList;
 
@@ -47,27 +51,28 @@ public class TvshowAdapter extends RecyclerView.Adapter<TvshowAdapter.ViewHolder
         viewHolder.tvTitle.setText(item.getName());
         viewHolder.tvRating.setText(String.valueOf(item.getVoteAverage()));
 
-//        viewHolder.cvFilm.setOnClickListener(new View.OnClickListener() {
-//            @Override
-//            public void onClick(View v) {
-//                try {
-//                    Intent intent = new Intent(context,DetailTvshowActivity.class);
-//
-//                    TvshowItem items = new TvshowItem();
-//                    items.setName(item.getName());
-//                    items.setPosterPath(BASE_URL_IMAGE+item.getPosterPath());
-//                    items.setOverview(item.getOverview());
-//                    items.setVoteAverage(item.getVoteAverage());
-//                    items.setBackdropPath(item.getBackdropPath());
-//
-//                    intent.putExtra(DetailTvshowActivity.DETAIL_TVSHOW,items);
-//                    context.startActivity(intent);
-//                }catch (Exception e){
-//                    Log.d("ClickMovie" , "GAGAL KLIK MOVIENYA");
-//                    Toast.makeText(context,"Gagal Menampilkan Detail",Toast.LENGTH_SHORT).show();
-//                }
-//            }
-//        });
+        viewHolder.cvFilm.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                try {
+                    Intent intent = new Intent(context,DetailTvshowActivity.class);
+
+                    TvshowItem items = new TvshowItem();
+                    items.setName(item.getName());
+                    items.setPosterPath(BASE_URL_IMAGE+item.getPosterPath());
+                    items.setOverview(item.getOverview());
+                    items.setVoteAverage(item.getVoteAverage());
+                    items.setBackdropPath(item.getBackdropPath());
+
+                    intent.putExtra(DetailTvshowActivity.DETAIL_TVSHOW,items);
+                    Log.d("AdapterClickTvshow" , "MOVE TO DETAILTVSHOW");
+                    context.startActivity(intent);
+                }catch (Exception e){
+                    Log.d("AdapterClickTvshow" , "GAGAL KLIK TVSHOW");
+                    Toast.makeText(context,"Gagal Menampilkan Detail",Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
     }
 
     @Override
