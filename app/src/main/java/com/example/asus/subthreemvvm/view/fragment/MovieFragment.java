@@ -55,13 +55,8 @@ public class MovieFragment extends Fragment {
         rvMovie = view.findViewById(R.id.fragment_movies_rv);
         rvMovie.setLayoutManager(new LinearLayoutManager(getContext()));
 
-
-
-
         movieViewModel = ViewModelProviders.of(this).get(MovieViewModel.class);
-
         movieViewModel.setMovie(getResources().getString(R.string.code_language));
-
         movieViewModel.getMovies().observe(this,getMovie);
 
         rvMovie.setAdapter(movieAdapter);
@@ -80,7 +75,7 @@ public class MovieFragment extends Fragment {
     };
 
     private void showLoading(boolean state){
-        if (state == true){
+        if (state){
             pbMovie.setVisibility(View.VISIBLE);
         }else{
             pbMovie.setVisibility(View.GONE);
