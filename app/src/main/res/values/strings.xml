@@ -1,0 +1,44 @@
+<resources>
+    <string name="app_name">SubThreeMvvm</string>
+    <string name="movie">Movie</string>
+    <string name="tv_shows">TV Shows</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="judul_film">Movie Title</string>
+    <string name="rating">rate</string>
+    <string name="_titikdua">:</string>
+    <string name="_4_5">4.5</string>
+    <string name="poster">poster</string>
+    <string name="code_language">en-US</string>
+    <string name="change_language">Change Language</string>
+    <string name="large_text">
+        "Material is the metaphor.\n\n"
+
+        "A material metaphor is the unifying theory of a rationalized space and a system of motion."
+        "The material is grounded in tactile reality, inspired by the study of paper and ink, yet "
+        "technologically advanced and open to imagination and magic.\n"
+        "Surfaces and edges of the material provide visual cues that are grounded in reality. The "
+        "use of familiar tactile attributes helps users quickly understand affordances. Yet the "
+        "flexibility of the material creates new affordances that supercede those in the physical "
+        "world, without breaking the rules of physics.\n"
+        "The fundamentals of light, surface, and movement are key to conveying how objects move, "
+        "interact, and exist in space and in relation to each other. Realistic lighting shows "
+        "seams, divides space, and indicates moving parts.\n\n"
+
+        "Bold, graphic, intentional.\n\n"
+
+        "The foundational elements of print based design typography, grids, space, scale, color, "
+        "and use of imagery guide visual treatments. These elements do far more than please the "
+        "eye. They create hierarchy, meaning, and focus. Deliberate color choices, edge to edge "
+        "imagery, large scale typography, and intentional white space create a bold and graphic "
+        "interface that immerse the user in the experience.\n"
+        "An emphasis on user actions makes core functionality immediately apparent and provides "
+        "waypoints for the user.\n\n"
+    </string>
+    <string name="rate_8_8">Rate : 8.8</string>
+    <string name="overview">Overview</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+</resources>
