@@ -5,7 +5,7 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="judul_film">Movie Title</string>
-    <string name="rating">rate</string>
+    <string name="rating">Rate</string>
     <string name="_titikdua">:</string>
     <string name="_4_5">4.5</string>
     <string name="poster">poster</string>

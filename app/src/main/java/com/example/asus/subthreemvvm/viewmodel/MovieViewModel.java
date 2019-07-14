@@ -20,7 +20,6 @@ public class MovieViewModel extends ViewModel {
     private MovieService movieService;
     private String lang;
 
-    private static final String API_KEY = "05faacecb1bb8a123ad56542b1708bad";
     private MutableLiveData<ArrayList<MovieItem>> listMovie = new MutableLiveData<>();
 
 

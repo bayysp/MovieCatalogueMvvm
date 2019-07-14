@@ -58,6 +58,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
                     Intent intent = new Intent(context, DetailMovieActivity.class);
 
                     MovieItem items = new MovieItem();
+                    items.setId(item.getId());
                     items.setTitle(item.getTitle());
                     items.setPosterPath(BASE_URL_IMAGE + item.getPosterPath());
                     items.setOverview(item.getOverview());
