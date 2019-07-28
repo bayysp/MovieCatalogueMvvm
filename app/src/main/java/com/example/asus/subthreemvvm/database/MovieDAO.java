@@ -21,4 +21,5 @@ public interface MovieDAO {
 
     @Query("SELECT * FROM favorite_movie WHERE id = :idMovie LIMIT 1")
     List<MovieModelDb> getById(int idMovie);
+
 }

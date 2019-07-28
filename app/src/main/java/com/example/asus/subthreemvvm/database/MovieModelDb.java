@@ -6,8 +6,6 @@ import android.arch.persistence.room.PrimaryKey;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.gson.annotations.SerializedName;
-
 @Entity(tableName = "favorite_movie")
 public class MovieModelDb implements Parcelable {
 

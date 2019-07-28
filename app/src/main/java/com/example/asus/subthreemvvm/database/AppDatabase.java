@@ -8,7 +8,9 @@ import android.content.Context;
 @Database(entities = {MovieModelDb.class},version = 1)
 
 public abstract class AppDatabase extends RoomDatabase {
+
     public abstract MovieDAO movieDAO();
+
     private static AppDatabase appDatabase;
 
     public static AppDatabase initDatabase(Context context){
