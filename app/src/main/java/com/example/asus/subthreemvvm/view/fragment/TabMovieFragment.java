@@ -1,7 +1,6 @@
 package com.example.asus.subthreemvvm.view.fragment;
 
 
-import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -12,14 +11,12 @@ import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ProgressBar;
 import android.widget.TextView;
 
 import com.example.asus.subthreemvvm.R;
 import com.example.asus.subthreemvvm.adapter.FavoriteMovieAdapter;
 import com.example.asus.subthreemvvm.database.AppDatabase;
 import com.example.asus.subthreemvvm.database.MovieModelDb;
-import com.example.asus.subthreemvvm.view._interface.AsyncCallBack;
 
 import java.util.ArrayList;
 

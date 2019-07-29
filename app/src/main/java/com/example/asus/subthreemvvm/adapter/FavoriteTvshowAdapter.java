@@ -16,9 +16,7 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.asus.subthreemvvm.R;
 import com.example.asus.subthreemvvm.database.MovieModelDb;
-import com.example.asus.subthreemvvm.model.MovieItem;
 import com.example.asus.subthreemvvm.model.TvshowItem;
-import com.example.asus.subthreemvvm.view.activity.DetailMovieActivity;
 import com.example.asus.subthreemvvm.view.activity.DetailTvshowActivity;
 
 import java.util.ArrayList;
