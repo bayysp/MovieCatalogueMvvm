@@ -11,6 +11,7 @@ import android.view.Menu;
 import android.view.MenuItem;
 
 import com.example.asus.subthreemvvm.R;
+import com.example.asus.subthreemvvm.view.fragment.FavoriteFragment;
 import com.example.asus.subthreemvvm.view.fragment.MovieFragment;
 import com.example.asus.subthreemvvm.view.fragment.TvshowFragment;
 
@@ -65,6 +66,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
             case R.id.menu_bottomnav_tvshows:
                 selectedFragment = new TvshowFragment();
+                break;
+
+            case R.id.menu_bottomnav_fav:
+                selectedFragment = new FavoriteFragment();
                 break;
         }
         return loadFragment(selectedFragment);

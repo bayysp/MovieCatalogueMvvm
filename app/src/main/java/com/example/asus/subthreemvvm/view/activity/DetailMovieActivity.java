@@ -90,6 +90,7 @@ public class DetailMovieActivity extends AppCompatActivity {
             movieModelDb.setPosterPath(getMovie.getPosterPath());
             movieModelDb.setOverview(getMovie.getOverview());
             movieModelDb.setVoteAverage(getMovie.getVoteAverage());
+            movieModelDb.setCategory("movie");
 
             appDatabase.movieDAO().deleteMovie(movieModelDb);
             Toast.makeText(getApplicationContext(), "DELETE FROM FAVORITE", Toast.LENGTH_SHORT).show();
@@ -112,6 +113,7 @@ public class DetailMovieActivity extends AppCompatActivity {
             movieModelDb.setPosterPath(getMovie.getPosterPath());
             movieModelDb.setOverview(getMovie.getOverview());
             movieModelDb.setVoteAverage(getMovie.getVoteAverage());
+            movieModelDb.setCategory("movie");
 
             appDatabase.movieDAO().insertMovie(movieModelDb);
 

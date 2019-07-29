@@ -15,39 +15,41 @@ import android.widget.Toast;
 
 import com.bumptech.glide.Glide;
 import com.example.asus.subthreemvvm.R;
+import com.example.asus.subthreemvvm.database.MovieModelDb;
 import com.example.asus.subthreemvvm.model.MovieItem;
 import com.example.asus.subthreemvvm.view.activity.DetailMovieActivity;
 
 import java.util.ArrayList;
 
-public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
+public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdapter.ViewHolder> {
 
-    private ArrayList<MovieItem> movieItems = new ArrayList<>();
+    private ArrayList<MovieModelDb> movieItems = new ArrayList<>();
     private Context context;
-    private static final String BASE_URL_IMAGE = "https://image.tmdb.org/t/p/w185/";
 
-    public MovieAdapter(Context context) {
+//    private static final String BASE_URL_IMAGE = "https://image.tmdb.org/t/p/w185";
+
+    public FavoriteMovieAdapter(Context context) {
         this.context = context;
     }
 
-    public void setData(ArrayList<MovieItem> items) {
-            movieItems.clear();
-            movieItems.addAll(items);
-            notifyDataSetChanged();
+    public void setData(ArrayList<MovieModelDb> items) {
+        movieItems.clear();
+        movieItems.addAll(items);
+        notifyDataSetChanged();
     }
 
     @NonNull
     @Override
-    public MovieAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.movie_item, viewGroup, false);
-        return new ViewHolder(view);
+    public FavoriteMovieAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.favorite_movie_item, viewGroup, false);
+        return new FavoriteMovieAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MovieAdapter.ViewHolder viewHolder, int i) {
-        final MovieItem item = movieItems.get(i);
+    public void onBindViewHolder(@NonNull FavoriteMovieAdapter.ViewHolder viewHolder, int i) {
+        final MovieModelDb item = movieItems.get(i);
 
-        Glide.with(context).load(BASE_URL_IMAGE + item.getPosterPath()).into(viewHolder.ivPoster);
+        Glide.with(context).load( item.getPosterPath()).into(viewHolder.ivPoster);
         viewHolder.tvTitle.setText(item.getTitle());
         viewHolder.tvRating.setText(String.valueOf(item.getVoteAverage()));
 
@@ -60,10 +62,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
                     MovieItem items = new MovieItem();
                     items.setId(item.getId());
                     items.setTitle(item.getTitle());
-                    items.setPosterPath(BASE_URL_IMAGE + item.getPosterPath());
+                    items.setPosterPath( item.getPosterPath());
                     items.setOverview(item.getOverview());
                     items.setVoteAverage(item.getVoteAverage());
-                    items.setBackdropPath(item.getBackdropPath());
 
                     intent.putExtra(DetailMovieActivity.DETAIL_MOVIE, items);
                     context.startActivity(intent);
@@ -90,11 +91,10 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         ViewHolder(@NonNull View itemView) {
             super(itemView);
 
-            ivPoster = itemView.findViewById(R.id.movie_item_ivposter);
-            tvTitle = itemView.findViewById(R.id.movie_item_tvtitle);
-            tvRating = itemView.findViewById(R.id.movie_item_tvrating);
-            cvFilm = itemView.findViewById(R.id.movie_item_cv);
-
+            ivPoster = itemView.findViewById(R.id.favorite_movie_item_ivposter);
+            tvTitle = itemView.findViewById(R.id.favorite_movie_item_tvtitle);
+            tvRating = itemView.findViewById(R.id.favorite_movie_item_tvrating);
+            cvFilm = itemView.findViewById(R.id.favorite_movie_item_cv);
         }
     }
 }

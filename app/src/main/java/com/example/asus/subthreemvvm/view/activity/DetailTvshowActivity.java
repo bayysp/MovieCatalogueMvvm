@@ -90,6 +90,7 @@ public class DetailTvshowActivity extends AppCompatActivity {
             movieModelDb.setPosterPath(getTvshow.getPosterPath());
             movieModelDb.setOverview(getTvshow.getOverview());
             movieModelDb.setVoteAverage(getTvshow.getVoteAverage());
+            movieModelDb.setCategory("tvshow");
 
             appDatabase.movieDAO().deleteMovie(movieModelDb);
             Toast.makeText(getApplicationContext(), "DELETE FROM FAVORITE", Toast.LENGTH_SHORT).show();
@@ -112,6 +113,7 @@ public class DetailTvshowActivity extends AppCompatActivity {
             movieModelDb.setPosterPath(getTvshow.getPosterPath());
             movieModelDb.setOverview(getTvshow.getOverview());
             movieModelDb.setVoteAverage(getTvshow.getVoteAverage());
+            movieModelDb.setCategory("tvshow");
 
             appDatabase.movieDAO().insertMovie(movieModelDb);
 

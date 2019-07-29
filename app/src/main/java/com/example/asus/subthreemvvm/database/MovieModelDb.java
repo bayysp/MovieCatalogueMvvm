@@ -9,6 +9,9 @@ import android.os.Parcelable;
 @Entity(tableName = "favorite_movie")
 public class MovieModelDb implements Parcelable {
 
+    @ColumnInfo(name = "category")
+    private String category;
+
     @ColumnInfo(name = "overview")
     private String overview;
 
@@ -24,6 +27,14 @@ public class MovieModelDb implements Parcelable {
     @PrimaryKey(autoGenerate = true)
     @ColumnInfo(name = "id")
     private int id;
+
+    public String getCategory() {
+        return category;
+    }
+
+    public void setCategory(String category) {
+        this.category = category;
+    }
 
     public String getOverview() {
         return overview;
