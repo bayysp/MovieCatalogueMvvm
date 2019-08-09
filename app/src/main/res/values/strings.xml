@@ -38,6 +38,8 @@
     <string name="rate_8_8">Rate : 8.8</string>
     <string name="overview">Overview</string>
     <string name="favorite">Favorite</string>
+    <string name="search">Search</string>
+    <string name="input_text">Input Text</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

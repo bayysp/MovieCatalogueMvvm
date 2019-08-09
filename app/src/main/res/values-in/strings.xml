@@ -37,5 +37,8 @@
     </string>
     <string name="rate_8_8">Rating : 8.8</string>
     <string name="overview">Sinopsis</string>
+    <string name="favorite">Favorit</string>
+    <string name="search">Cari</string>
+    <string name="input_text">Masukkan Kata</string>
 
 </resources>
