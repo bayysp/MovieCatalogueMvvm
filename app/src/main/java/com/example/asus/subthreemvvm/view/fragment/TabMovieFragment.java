@@ -26,7 +26,7 @@ import java.util.ArrayList;
  */
 public class TabMovieFragment extends Fragment {
 
-//    private ProgressBar pbMovieFav;
+    //    private ProgressBar pbMovieFav;
     private RecyclerView rvMovieFav;
     private ArrayList<MovieModelDb> listMovieFav = new ArrayList<>();
     private AppDatabase appDatabase;
@@ -50,14 +50,13 @@ public class TabMovieFragment extends Fragment {
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
 
-//        pbMovieFav = view.findViewById(R.id.fragment_tabmovies_pb);
         rvMovieFav = view.findViewById(R.id.fragment_tabmovies_rv);
         tvStatus = view.findViewById(R.id.fragment_tabmovies_tv);
         rvMovieFav.setLayoutManager(new LinearLayoutManager(getContext()));
 
-        if (this.appDatabase == null){
+        if (this.appDatabase == null) {
             appDatabase = AppDatabase.initDatabase(getContext());
-            Log.d("TabMovieFragment" , "init appDatabase");
+            Log.d("TabMovieFragment", "init appDatabase");
         }
 
         listMovieFav.addAll(appDatabase.movieDAO().getByCategory("movie"));
@@ -67,13 +66,12 @@ public class TabMovieFragment extends Fragment {
 
         rvMovieFav.setAdapter(favoriteMovieAdapter);
 
-        if (listMovieFav.isEmpty()){
+        if (listMovieFav.isEmpty()) {
             tvStatus.setVisibility(View.VISIBLE);
-        }else{
+        } else {
             tvStatus.setVisibility(View.GONE);
         }
     }
-
 
 
 }

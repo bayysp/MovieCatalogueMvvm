@@ -35,10 +35,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     BottomNavigationView bottomNav;
 
     Fragment selectedFragment = new MovieFragment();
+    String fragmentParam = "movie";
 
     String title = "Home";
 
-    private SearchMovieViewModel searchMovieViewModel;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,11 +76,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         switch (menuItem.getItemId()) {
             case R.id.menu_bottomnav_movie:
                 selectedFragment = new MovieFragment();
-
+                fragmentParam = "movie";
                 break;
 
             case R.id.menu_bottomnav_tvshows:
                 selectedFragment = new TvshowFragment();
+                fragmentParam = "tvshow";
                 break;
 
             case R.id.menu_bottomnav_fav:
@@ -94,40 +95,6 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_settings, menu);
 
-        SearchManager searchManager = (SearchManager) getSystemService(Context.SEARCH_SERVICE);
-
-        if (searchManager != null){
-            SearchView searchView = (SearchView) menu.findItem(R.id.search_menu).getActionView();
-            searchView.setSearchableInfo(searchManager.getSearchableInfo(getComponentName()));
-            searchView.setQueryHint(getResources().getString(R.string.input_text));
-            searchView.setOnQueryTextListener(new SearchView.OnQueryTextListener() {
-                @Override
-                public boolean onQueryTextSubmit(String s) {
-                    Log.d("MainActivity","OptionsMenu - onQueryTextSubmit");
-                    try {
-                        searchData(s);
-                        return true;
-                    }catch (Exception e){
-                        Log.d("MainActivity","OptionsMenu - onQueryTextSubmit - Error");
-                        Toast.makeText(getApplicationContext(),"Data Tidak Ditemukan",Toast.LENGTH_SHORT).show();
-                        return false;
-                    }
-                }
-
-                @Override
-                public boolean onQueryTextChange(String s) {
-                    Log.d("MainActivity","OptionsMenu - onQueryTextChange");
-                    try {
-                        searchData(s);
-                        return true;
-                    }catch (Exception e){
-                        Log.d("MainActivity","OptionsMenu - onQueryTextChange - Error");
-                        Toast.makeText(getApplicationContext(),"Data Tidak Ditemukan",Toast.LENGTH_SHORT).show();
-                        return false;
-                    }
-                }
-            });
-        }
         return super.onCreateOptionsMenu(menu);
     }
 
@@ -136,6 +103,24 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         if (item.getItemId() == R.id.action_change_settings) {
             Intent mIntent = new Intent(Settings.ACTION_LOCALE_SETTINGS);
             startActivity(mIntent);
+        }
+
+        if (item.getItemId() == R.id.search_menu_activity){
+            if (fragmentParam.equals("movie")){
+                Intent intent = new Intent(this,SearchMovieActivity.class);
+                intent.putExtra("fragmentparam",fragmentParam);
+                Log.d("MainActivityOptions", "Move to SearchMovieActivity");
+
+                startActivity(intent);
+            }else{
+                Intent intent = new Intent(this,SearchMovieActivity.class);
+                intent.putExtra("fragmentparam",fragmentParam);
+                Log.d("MainActivityOptions", "Move to SearchTvshowActivity");
+
+                startActivity(intent);
+            }
+
+
         }
         return super.onOptionsItemSelected(item);
     }
@@ -148,22 +133,4 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         getSupportFragmentManager().putFragment(outState, KEY_FRAGMENT, selectedFragment);
     }
 
-    private void searchData(String keyword){
-        if (selectedFragment instanceof MovieFragment) {
-            searchMovieViewModel = ViewModelProviders.of(this).get(SearchMovieViewModel.class);
-            searchMovieViewModel.setMovieSearch(getResources().getString(R.string.code_language),keyword);
-            searchMovieViewModel.getSearchMovies().observe(this,getSearchMovie);
-        } else {
-
-        }
-    }
-
-    private Observer<ArrayList<MovieItem>> getSearchMovie = new Observer<ArrayList<MovieItem>>() {
-        @Override
-        public void onChanged(@Nullable ArrayList<MovieItem> movieItems) {
-            if (movieItems != null){
-                Log.d("GetSearchMovieData",String.valueOf(movieItems));
-            }
-        }
-    };
 }

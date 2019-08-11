@@ -38,6 +38,8 @@ public class DetailTvshowActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_detail_tvshow);
 
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getSupportActionBar().setDisplayShowHomeEnabled(true);
         ivPoster = findViewById(R.id.detail_activity_tv_ivposter);
         tvTitle = findViewById(R.id.detail_activity_tv_tvtitle);
         tvOverview = findViewById(R.id.detail_activity_tv_tvdesc);
