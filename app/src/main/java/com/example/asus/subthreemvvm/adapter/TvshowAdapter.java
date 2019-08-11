@@ -58,6 +58,7 @@ public class TvshowAdapter extends RecyclerView.Adapter<TvshowAdapter.ViewHolder
                     Intent intent = new Intent(context,DetailTvshowActivity.class);
 
                     TvshowItem items = new TvshowItem();
+                    items.setId(item.getId());
                     items.setName(item.getName());
                     items.setPosterPath(BASE_URL_IMAGE+item.getPosterPath());
                     items.setOverview(item.getOverview());

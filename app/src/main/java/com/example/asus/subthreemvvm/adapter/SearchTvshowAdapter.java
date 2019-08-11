@@ -16,50 +16,52 @@ import android.widget.Toast;
 import com.bumptech.glide.Glide;
 import com.example.asus.subthreemvvm.R;
 import com.example.asus.subthreemvvm.model.MovieItem;
+import com.example.asus.subthreemvvm.model.TvshowItem;
 import com.example.asus.subthreemvvm.view.activity.DetailMovieActivity;
+import com.example.asus.subthreemvvm.view.activity.DetailTvshowActivity;
 
 import java.util.ArrayList;
 
-public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> {
+public class SearchTvshowAdapter extends RecyclerView.Adapter<SearchTvshowAdapter.ViewHolder> {
 
-    private ArrayList<MovieItem> movieItems = new ArrayList<>();
+    private ArrayList<TvshowItem> tvshowItems = new ArrayList<>();
     private Context context;
     private static final String BASE_URL_IMAGE = "https://image.tmdb.org/t/p/w185/";
 
-    public MovieAdapter(Context context) {
+    public SearchTvshowAdapter(Context context) {
         this.context = context;
     }
 
-    public void setData(ArrayList<MovieItem> items) {
-        movieItems.clear();
-        movieItems.addAll(items);
+    public void setData(ArrayList<TvshowItem> items) {
+        tvshowItems.clear();
+        tvshowItems.addAll(items);
         notifyDataSetChanged();
     }
 
     @NonNull
     @Override
-    public MovieAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.movie_item, viewGroup, false);
-        return new ViewHolder(view);
+    public SearchTvshowAdapter.ViewHolder onCreateViewHolder(@NonNull ViewGroup viewGroup, int i) {
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.search_item, viewGroup, false);
+        return new SearchTvshowAdapter.ViewHolder(view);
     }
 
     @Override
-    public void onBindViewHolder(@NonNull MovieAdapter.ViewHolder viewHolder, int i) {
-        final MovieItem item = movieItems.get(i);
+    public void onBindViewHolder(@NonNull SearchTvshowAdapter.ViewHolder viewHolder, int i) {
+        final TvshowItem item = tvshowItems.get(i);
 
         Glide.with(context).load(BASE_URL_IMAGE + item.getPosterPath()).into(viewHolder.ivPoster);
-        viewHolder.tvTitle.setText(item.getTitle());
+        viewHolder.tvTitle.setText(item.getName());
         viewHolder.tvRating.setText(String.valueOf(item.getVoteAverage()));
 
-        viewHolder.cvFilm.setOnClickListener(new View.OnClickListener() {
+        viewHolder.cvSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 try {
-                    Intent intent = new Intent(context, DetailMovieActivity.class);
+                    Intent intent = new Intent(context, DetailTvshowActivity.class);
 
                     MovieItem items = new MovieItem();
                     items.setId(item.getId());
-                    items.setTitle(item.getTitle());
+                    items.setTitle(item.getName());
                     items.setPosterPath(BASE_URL_IMAGE + item.getPosterPath());
                     items.setOverview(item.getOverview());
                     items.setVoteAverage(item.getVoteAverage());
@@ -67,9 +69,9 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
                     intent.putExtra(DetailMovieActivity.DETAIL_MOVIE, items);
                     context.startActivity(intent);
-                    Log.d("AdapterClickMovie", "MOVE INTO DETAIL ACTIVITY");
+                    Log.d("SearchAdapterClickMovie", "MOVE INTO DETAIL ACTIVITY");
                 } catch (Exception e) {
-                    Log.d("AdapterClickMovie", "GAGAL KLIK MOVIENYA");
+                    Log.d("SearchAdapterClickMovie", "GAGAL KLIK MOVIENYA");
                     Toast.makeText(context, "Gagal Menampilkan Detail", Toast.LENGTH_SHORT).show();
                 }
             }
@@ -78,23 +80,19 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
     @Override
     public int getItemCount() {
-        return movieItems.size();
+        return tvshowItems.size();
     }
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView ivPoster;
-        TextView tvTitle;
-        TextView tvRating;
-        CardView cvFilm;
-
-        ViewHolder(@NonNull View itemView) {
+        TextView tvTitle,tvRating;
+        CardView cvSearch;
+        public ViewHolder(@NonNull View itemView) {
             super(itemView);
-
-            ivPoster = itemView.findViewById(R.id.movie_item_ivposter);
-            tvTitle = itemView.findViewById(R.id.movie_item_tvtitle);
-            tvRating = itemView.findViewById(R.id.movie_item_tvrating);
-            cvFilm = itemView.findViewById(R.id.movie_item_cv);
-
+            cvSearch = itemView.findViewById(R.id.search_item_cv);
+            ivPoster = itemView.findViewById(R.id.search_item_ivposter);
+            tvTitle = itemView.findViewById(R.id.search_item_tvtitle);
+            tvRating = itemView.findViewById(R.id.search_item_tvrating);
         }
     }
 }
