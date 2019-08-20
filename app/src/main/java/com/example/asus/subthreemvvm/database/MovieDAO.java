@@ -4,6 +4,7 @@ import android.arch.persistence.room.Dao;
 import android.arch.persistence.room.Delete;
 import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
+import android.database.Cursor;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -25,5 +26,14 @@ public interface MovieDAO {
 
     @Query("SELECT * FROM favorite_movie WHERE category = :category")
     List<MovieModelDb> getByCategory(String category);
+
+    @Query("SELECT * FROM favorite_movie")
+    Cursor getAllMovie();
+
+    @Query("SELECT * FROM favorite_movie WHERE id = :idMovie LIMIT 1")
+    Cursor getMovieById(long idMovie);
+
+    @Insert
+    long[] insertAll(MovieModelDb[] movie);
 
 }
