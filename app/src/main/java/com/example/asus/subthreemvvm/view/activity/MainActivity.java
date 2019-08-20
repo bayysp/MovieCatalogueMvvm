@@ -122,6 +122,12 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
 
         }
+
+        if (item.getItemId() == R.id.action_reminder_settings){
+            Intent intent = new Intent(this,SettingsActivity.class);
+            startActivity(intent);
+            Log.d("MainActivityOptions", "Move to SettingsActivity");
+        }
         return super.onOptionsItemSelected(item);
     }
 

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context=".view.activity.SettingsActivity">
+
+    <TextView
+        android:id="@+id/settings_tv_setdaily"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:text="@string/set_daily_reminder"
+        android:textSize="18sp"
+        app:layout_constraintBottom_toTopOf="@id/settings_tv_release"
+        app:layout_constraintEnd_toStartOf="@id/settings_switch_daily"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <Switch
+        android:id="@+id/settings_switch_daily"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:text="@string/off"
+        app:layout_constraintBottom_toTopOf="@id/settings_switch_release"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/settings_tv_setdaily"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <TextView
+        android:id="@+id/settings_tv_release"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:text="@string/set_release_reminder"
+        android:textSize="18sp"
+        app:layout_constraintEnd_toStartOf="@id/settings_switch_release"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/settings_tv_setdaily" />
+
+    <Switch
+        android:id="@+id/settings_switch_release"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_margin="12dp"
+        android:text="@string/off"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/settings_tv_release"
+        app:layout_constraintTop_toBottomOf="@+id/settings_switch_daily" />
+
+
+</android.support.constraint.ConstraintLayout>

@@ -46,6 +46,10 @@
     <string name="appwidget_text">EXAMPLE</string>
     <string name="add_widget">Add widget</string>
     <string name="empty">Empty</string>
+    <string name="set_daily_reminder">SET DAILY REMINDER</string>
+    <string name="off">OFF</string>
+    <string name="set_release_reminder">SET RELEASE REMINDER</string>
+    <string name="reminder_settings">Reminder Settings</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 

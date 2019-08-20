@@ -34,8 +34,10 @@
         </receiver>
 
         <service
-            android:name="com.example.asus.subthreemvvm.view.widget.StackWidgetService"
+            android:name=".view.widget.StackWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+        <activity android:name=".view.activity.SettingsActivity"></activity>
     </application>
 
 </manifest>

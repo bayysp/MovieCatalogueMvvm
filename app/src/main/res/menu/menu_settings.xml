@@ -12,4 +12,9 @@
         android:icon="@drawable/ic_search"
         app:showAsAction="collapseActionView|ifRoom"
         />
+
+    <item
+        android:id="@+id/action_reminder_settings"
+        android:title="@string/reminder_settings"
+        app:showAsAction="never"/>
 </menu>
