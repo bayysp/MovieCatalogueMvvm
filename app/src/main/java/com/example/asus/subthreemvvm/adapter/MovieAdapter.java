@@ -38,7 +38,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
         notifyDataSetChanged();
     }
 
-    public void setDataCursor(Cursor dataCursor){
+    public void setDataCursor(Cursor dataCursor) {
         mCursor = dataCursor;
         notifyDataSetChanged();
     }

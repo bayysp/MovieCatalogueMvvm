@@ -6,7 +6,6 @@ import android.arch.persistence.room.Insert;
 import android.arch.persistence.room.Query;
 import android.database.Cursor;
 
-import java.util.ArrayList;
 import java.util.List;
 
 @Dao
@@ -26,9 +25,6 @@ public interface MovieDAO {
 
     @Query("SELECT * FROM favorite_movie WHERE category = :category")
     List<MovieModelDb> getByCategory(String category);
-
-
-
 
     //query bawah ini untuk yg contentprovider
 

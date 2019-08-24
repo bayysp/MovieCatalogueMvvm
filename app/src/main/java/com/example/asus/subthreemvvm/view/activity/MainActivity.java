@@ -16,9 +16,11 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import com.example.asus.subthreemvvm.MovieCatalogueProvider;
 import com.example.asus.subthreemvvm.R;
 import com.example.asus.subthreemvvm.adapter.MovieAdapter;
-import com.example.asus.subthreemvvm.MovieCatalogueProvider;
+import com.example.asus.subthreemvvm.notifications.DailyReminderReceiver;
+import com.example.asus.subthreemvvm.scheduler.MovieReleaseTask;
 import com.example.asus.subthreemvvm.view.fragment.FavoriteFragment;
 import com.example.asus.subthreemvvm.view.fragment.MovieFragment;
 import com.example.asus.subthreemvvm.view.fragment.TvshowFragment;
@@ -34,8 +36,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     String fragmentParam = "movie";
     MovieAdapter movieAdapter;
 
+
     String title = "Home";
 
+    DailyReminderReceiver dailyReminderReceiver = new DailyReminderReceiver();
+    MovieReleaseTask movieReleaseTask;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -56,6 +61,10 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         }
 
         movieAdapter = new MovieAdapter(getApplicationContext());
+
+        dailyReminderReceiver.setAlarmNotification(getApplicationContext(), dailyReminderReceiver.EXTRA_TYPE_PREF, "07:00", "DAILY REMINDER");
+        movieReleaseTask = new MovieReleaseTask(this);
+        movieReleaseTask.createPeriodicTask();
     }
 
     private boolean loadFragment(Fragment fragment) {
@@ -64,7 +73,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
                     .beginTransaction()
                     .replace(R.id.fragment_container, fragment)
                     .commit();
-            Log.d("MainActivityOptions", "selectedFragment is : "+selectedFragment);
+            Log.d("MainActivityOptions", "selectedFragment is : " + selectedFragment);
             return true;
         }
         return false;
@@ -104,16 +113,16 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             startActivity(mIntent);
         }
 
-        if (item.getItemId() == R.id.search_menu_activity){
-            if (fragmentParam.equals("movie")){
-                Intent intent = new Intent(this,SearchMovieActivity.class);
-                intent.putExtra("fragmentparam",fragmentParam);
+        if (item.getItemId() == R.id.search_menu_activity) {
+            if (fragmentParam.equals("movie")) {
+                Intent intent = new Intent(this, SearchMovieActivity.class);
+                intent.putExtra("fragmentparam", fragmentParam);
                 Log.d("MainActivityOptions", "Move to SearchMovieActivity");
 
                 startActivity(intent);
-            }else{
-                Intent intent = new Intent(this,SearchMovieActivity.class);
-                intent.putExtra("fragmentparam",fragmentParam);
+            } else {
+                Intent intent = new Intent(this, SearchMovieActivity.class);
+                intent.putExtra("fragmentparam", fragmentParam);
                 Log.d("MainActivityOptions", "Move to SearchTvshowActivity");
 
                 startActivity(intent);
@@ -122,8 +131,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         }
 
-        if (item.getItemId() == R.id.action_reminder_settings){
-            Intent intent = new Intent(this,SettingsActivity.class);
+        if (item.getItemId() == R.id.action_reminder_settings) {
+            Intent intent = new Intent(this, SettingsActivity.class);
             startActivity(intent);
             Log.d("MainActivityOptions", "Move to SettingsActivity");
         }
@@ -142,22 +151,22 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
         @NonNull
         @Override
         public Loader<Cursor> onCreateLoader(int i, @Nullable Bundle bundle) {
-            switch (i){
+            switch (i) {
                 case 1:
-                return new CursorLoader(
-                        getApplicationContext(),
-                        MovieCatalogueProvider.URI_FAVORITE,
-                        new String[]{
-                                "title",
-                                "poster_path",
-                                "overview",
-                                "vote_average",
-                                "category"
-                        },
-                        null,
-                        null,
-                        null
-                );
+                    return new CursorLoader(
+                            getApplicationContext(),
+                            MovieCatalogueProvider.URI_FAVORITE,
+                            new String[]{
+                                    "title",
+                                    "poster_path",
+                                    "overview",
+                                    "vote_average",
+                                    "category"
+                            },
+                            null,
+                            null,
+                            null
+                    );
 
                 default:
                     throw new IllegalArgumentException();
@@ -166,7 +175,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         @Override
         public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor cursor) {
-            switch (loader.getId()){
+            switch (loader.getId()) {
                 case 1:
                     movieAdapter.setDataCursor(cursor);
                     break;
@@ -175,7 +184,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         @Override
         public void onLoaderReset(@NonNull Loader<Cursor> loader) {
-            switch (loader.getId()){
+            switch (loader.getId()) {
                 case 1:
                     movieAdapter.setDataCursor(null);
                     break;

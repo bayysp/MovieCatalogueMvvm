@@ -6,7 +6,6 @@ import android.arch.persistence.room.PrimaryKey;
 import android.content.ContentValues;
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.provider.BaseColumns;
 
 
 @Entity(tableName = "favorite_movie")
@@ -128,11 +127,11 @@ public class MovieModelDb implements Parcelable {
             movie.title = values.getAsString("title");
         }
 
-        if (values.containsKey("poster_path")){
+        if (values.containsKey("poster_path")) {
             movie.posterPath = values.getAsString("poster_path");
         }
 
-        if (values.containsKey("vote_average")){
+        if (values.containsKey("vote_average")) {
             movie.voteAverage = values.getAsDouble("vote_average");
         }
         return movie;

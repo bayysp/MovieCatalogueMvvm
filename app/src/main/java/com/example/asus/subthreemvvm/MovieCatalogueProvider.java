@@ -94,7 +94,7 @@ public class MovieCatalogueProvider extends ContentProvider {
 
                 AppDatabase.initDatabase(context).movieDAO()
                         .insertMovie(MovieModelDb.fromContentValues(values));
-                return ContentUris.withAppendedId(uri,id);
+                return ContentUris.withAppendedId(uri, id);
 
             case CODE_MENU_ITEM:
                 throw new IllegalArgumentException("Invalid URI, cannot insert with ID: " + uri);
@@ -114,7 +114,7 @@ public class MovieCatalogueProvider extends ContentProvider {
         return 0;
     }
 
-//    dibawah ini masih opsional
+    //    dibawah ini masih opsional
     @NonNull
     @Override
     public ContentProviderResult[] applyBatch(
