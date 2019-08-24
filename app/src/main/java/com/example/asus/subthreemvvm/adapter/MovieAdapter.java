@@ -2,6 +2,7 @@ package com.example.asus.subthreemvvm.adapter;
 
 import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.CardView;
 import android.support.v7.widget.RecyclerView;
@@ -24,6 +25,7 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
 
     private ArrayList<MovieItem> movieItems = new ArrayList<>();
     private Context context;
+    private Cursor mCursor;
     private static final String BASE_URL_IMAGE = "https://image.tmdb.org/t/p/w185/";
 
     public MovieAdapter(Context context) {
@@ -33,6 +35,11 @@ public class MovieAdapter extends RecyclerView.Adapter<MovieAdapter.ViewHolder> 
     public void setData(ArrayList<MovieItem> items) {
         movieItems.clear();
         movieItems.addAll(items);
+        notifyDataSetChanged();
+    }
+
+    public void setDataCursor(Cursor dataCursor){
+        mCursor = dataCursor;
         notifyDataSetChanged();
     }
 

@@ -1,4 +1,4 @@
-package com.example.asus.subthreemvvm.provider;
+package com.example.asus.subthreemvvm;
 
 import android.annotation.SuppressLint;
 import android.content.ContentProvider;
@@ -13,7 +13,6 @@ import android.database.Cursor;
 import android.net.Uri;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
-import android.view.Menu;
 
 import com.example.asus.subthreemvvm.database.AppDatabase;
 import com.example.asus.subthreemvvm.database.MovieDAO;
@@ -24,10 +23,10 @@ import java.util.ArrayList;
 @SuppressLint("Registered")
 public class MovieCatalogueProvider extends ContentProvider {
 
-    public static final String AUTHORITY = "com.example.asus.subthreemvvm.provider";
+    public static final String AUTHORITY = "com.example.asus.subthreemvvm";
 
-    public static final Uri URI_MENU = Uri.parse(
-            "content://"+ AUTHORITY + "/" + "favorite_movie"
+    public static final Uri URI_FAVORITE = Uri.parse(
+            "content://" + AUTHORITY + "/" + "favorite_movie"
     );
 
     private static final int CODE_MENU_DIR = 1;
@@ -36,8 +35,8 @@ public class MovieCatalogueProvider extends ContentProvider {
     private static final UriMatcher MATCHER = new UriMatcher(UriMatcher.NO_MATCH);
 
     static {
-        MATCHER.addURI(AUTHORITY,"favorite_movie",CODE_MENU_DIR);
-        MATCHER.addURI(AUTHORITY,"favorite_movie/*",CODE_MENU_ITEM);
+        MATCHER.addURI(AUTHORITY, "favorite_movie", CODE_MENU_DIR);
+        MATCHER.addURI(AUTHORITY, "favorite_movie/*", CODE_MENU_ITEM);
     }
 
     @Override
@@ -48,25 +47,25 @@ public class MovieCatalogueProvider extends ContentProvider {
 
     @Nullable
     @Override
-    public Cursor query(@NonNull  Uri uri, @Nullable String[] projection,@Nullable String selection,@Nullable String[] selectionArgs,@Nullable String sortOrder) {
+    public Cursor query(@NonNull Uri uri, @Nullable String[] projection, @Nullable String selection, @Nullable String[] selectionArgs, @Nullable String sortOrder) {
         final int code = MATCHER.match(uri);
-        if (code == CODE_MENU_DIR || code == CODE_MENU_ITEM){
+        if (code == CODE_MENU_DIR || code == CODE_MENU_ITEM) {
             final Context context = getContext();
-            if (context == null){
+            if (context == null) {
                 return null;
             }
 
             MovieDAO dao = AppDatabase.initDatabase(context).movieDAO();
             final Cursor cursor;
-            if (code == CODE_MENU_DIR){
+            if (code == CODE_MENU_DIR) {
                 cursor = dao.getAllMovie();
-            }else{
+            } else {
                 cursor = dao.getMovieById(ContentUris.parseId(uri));
             }
 
-            cursor.setNotificationUri(context.getContentResolver(),uri);
+            cursor.setNotificationUri(context.getContentResolver(), uri);
             return cursor;
-        }else {
+        } else {
             throw new IllegalArgumentException("Unknown URI: " + uri);
         }
     }
@@ -85,7 +84,24 @@ public class MovieCatalogueProvider extends ContentProvider {
 
     @Override
     public Uri insert(@NonNull Uri uri, @Nullable ContentValues values) {
-        return null;
+        switch (MATCHER.match(uri)) {
+            case CODE_MENU_DIR:
+                final Context context = getContext();
+                if (context == null) {
+                    return null;
+                }
+                final int id = values.getAsInteger("id");
+
+                AppDatabase.initDatabase(context).movieDAO()
+                        .insertMovie(MovieModelDb.fromContentValues(values));
+                return ContentUris.withAppendedId(uri,id);
+
+            case CODE_MENU_ITEM:
+                throw new IllegalArgumentException("Invalid URI, cannot insert with ID: " + uri);
+            default:
+                throw new IllegalArgumentException("Unknown URI: " + uri);
+        }
+
     }
 
     @Override
@@ -98,6 +114,7 @@ public class MovieCatalogueProvider extends ContentProvider {
         return 0;
     }
 
+//    dibawah ini masih opsional
     @NonNull
     @Override
     public ContentProviderResult[] applyBatch(

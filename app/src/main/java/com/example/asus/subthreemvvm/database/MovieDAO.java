@@ -27,13 +27,25 @@ public interface MovieDAO {
     @Query("SELECT * FROM favorite_movie WHERE category = :category")
     List<MovieModelDb> getByCategory(String category);
 
+
+
+
+    //query bawah ini untuk yg contentprovider
+
+    @Query("SELECT COUNT(*) FROM " + "favorite_movie")
+    int count();
+
+    @Insert
+    long[] insertAll(MovieModelDb[] movie);
+
+    @Insert
+    long insert(MovieModelDb movieModelDb);
+
     @Query("SELECT * FROM favorite_movie")
     Cursor getAllMovie();
 
     @Query("SELECT * FROM favorite_movie WHERE id = :idMovie LIMIT 1")
     Cursor getMovieById(long idMovie);
 
-    @Insert
-    long[] insertAll(MovieModelDb[] movie);
 
 }

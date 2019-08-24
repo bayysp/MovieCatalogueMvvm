@@ -8,14 +8,10 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.provider.BaseColumns;
 
+
 @Entity(tableName = "favorite_movie")
 public class MovieModelDb implements Parcelable {
 
-    /** The name of the ID column. */
-    public static final String COLUMN_ID = BaseColumns._ID;
-
-    /** The name of the name column. */
-    public static final String COLUMN_NAME = "name";
 
     @ColumnInfo(name = "category")
     private String category;
@@ -122,13 +118,22 @@ public class MovieModelDb implements Parcelable {
         }
     };
 
+
     public static MovieModelDb fromContentValues(ContentValues values) {
         final MovieModelDb movie = new MovieModelDb();
-        if (values.containsKey(COLUMN_ID)) {
-            movie.id = values.getAsInteger(COLUMN_ID);
+        if (values.containsKey("id")) {
+            movie.id = values.getAsInteger("id");
         }
-        if (values.containsKey(COLUMN_NAME)) {
-            movie.title = values.getAsString(COLUMN_NAME);
+        if (values.containsKey("title")) {
+            movie.title = values.getAsString("title");
+        }
+
+        if (values.containsKey("poster_path")){
+            movie.posterPath = values.getAsString("poster_path");
+        }
+
+        if (values.containsKey("vote_average")){
+            movie.voteAverage = values.getAsDouble("vote_average");
         }
         return movie;
     }

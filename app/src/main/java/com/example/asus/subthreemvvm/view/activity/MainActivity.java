@@ -1,31 +1,27 @@
 package com.example.asus.subthreemvvm.view.activity;
 
-import android.app.SearchManager;
-import android.arch.lifecycle.Observer;
-import android.arch.lifecycle.ViewModelProviders;
-import android.content.Context;
 import android.content.Intent;
+import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.Settings;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.design.widget.BottomNavigationView;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.LoaderManager;
+import android.support.v4.content.CursorLoader;
+import android.support.v4.content.Loader;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.SearchView;
 import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.widget.Toast;
 
 import com.example.asus.subthreemvvm.R;
-import com.example.asus.subthreemvvm.model.MovieItem;
+import com.example.asus.subthreemvvm.adapter.MovieAdapter;
+import com.example.asus.subthreemvvm.MovieCatalogueProvider;
 import com.example.asus.subthreemvvm.view.fragment.FavoriteFragment;
 import com.example.asus.subthreemvvm.view.fragment.MovieFragment;
 import com.example.asus.subthreemvvm.view.fragment.TvshowFragment;
-import com.example.asus.subthreemvvm.viewmodel.SearchMovieViewModel;
-
-import java.util.ArrayList;
 
 import static com.example.asus.subthreemvvm.base.BaseAppCompatActivity.KEY_FRAGMENT;
 import static com.example.asus.subthreemvvm.base.BaseAppCompatActivity.KEY_TITLE;
@@ -36,6 +32,7 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
     Fragment selectedFragment = new MovieFragment();
     String fragmentParam = "movie";
+    MovieAdapter movieAdapter;
 
     String title = "Home";
 
@@ -57,6 +54,8 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             loadFragment(selectedFragment);
             setTitle(title);
         }
+
+        movieAdapter = new MovieAdapter(getApplicationContext());
     }
 
     private boolean loadFragment(Fragment fragment) {
@@ -138,5 +137,50 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         getSupportFragmentManager().putFragment(outState, KEY_FRAGMENT, selectedFragment);
     }
+
+    private LoaderManager.LoaderCallbacks<Cursor> loaderCallbacks = new LoaderManager.LoaderCallbacks<Cursor>() {
+        @NonNull
+        @Override
+        public Loader<Cursor> onCreateLoader(int i, @Nullable Bundle bundle) {
+            switch (i){
+                case 1:
+                return new CursorLoader(
+                        getApplicationContext(),
+                        MovieCatalogueProvider.URI_FAVORITE,
+                        new String[]{
+                                "title",
+                                "poster_path",
+                                "overview",
+                                "vote_average",
+                                "category"
+                        },
+                        null,
+                        null,
+                        null
+                );
+
+                default:
+                    throw new IllegalArgumentException();
+            }
+        }
+
+        @Override
+        public void onLoadFinished(@NonNull Loader<Cursor> loader, Cursor cursor) {
+            switch (loader.getId()){
+                case 1:
+                    movieAdapter.setDataCursor(cursor);
+                    break;
+            }
+        }
+
+        @Override
+        public void onLoaderReset(@NonNull Loader<Cursor> loader) {
+            switch (loader.getId()){
+                case 1:
+                    movieAdapter.setDataCursor(null);
+                    break;
+            }
+        }
+    };
 
 }
