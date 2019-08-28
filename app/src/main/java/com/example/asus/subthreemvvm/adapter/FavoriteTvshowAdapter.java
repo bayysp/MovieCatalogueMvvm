@@ -30,7 +30,6 @@ public class FavoriteTvshowAdapter extends RecyclerView.Adapter<FavoriteTvshowAd
         this.context = context;
     }
 
-//    private static final String BASE_URL_IMAGE = "https://image.tmdb.org/t/p/w185/";
 
     public void setData(ArrayList<MovieModelDb> items) {
         tvshowItems.clear();

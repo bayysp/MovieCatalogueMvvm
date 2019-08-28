@@ -3,7 +3,19 @@
     package="com.example.asus.subthreemvvm">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
+    <permission
+        android:name="com.example.asus.subthreemvvm.READ_DATABASE"
+        android:protectionLevel="normal" />
+    <permission
+        android:name="com.example.asus.subthreemvvm.WRITE_DATABASE"
+        android:protectionLevel="normal" />
+
+    <uses-permission android:name="android.permission.RECEIVE_BOOT_COMPLETED" />
     <application
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
@@ -34,8 +46,28 @@
         </receiver>
 
         <service
-            android:name="com.example.asus.subthreemvvm.view.widget.StackWidgetService"
+            android:name=".view.widget.StackWidgetService"
             android:permission="android.permission.BIND_REMOTEVIEWS" />
+
+
+        <activity android:name=".view.activity.SettingsActivity"></activity>
+
+        <provider
+            android:name=".MovieCatalogueProvider"
+            android:authorities="com.example.asus.subthreemvvm"
+            android:exported="true"
+            android:readPermission="com.example.asus.subthreemvvm.READ_DATABASE"
+            android:writePermission="com.example.asus.subthreemvvm.WRITE_DATABASE" />
+
+        <receiver
+            android:name=".notifications.DailyReminderReceiver"
+            android:enabled="true"
+            android:exported="true" />
+
+        <receiver android:name=".notifications.ReleaseReceiver"
+            android:enabled="true"
+            android:exported="true"/>
+
     </application>
 
 </manifest>

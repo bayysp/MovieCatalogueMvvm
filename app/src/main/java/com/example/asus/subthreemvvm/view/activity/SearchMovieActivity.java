@@ -25,9 +25,6 @@ import com.example.asus.subthreemvvm.viewmodel.SearchMovieViewModel;
 
 import java.util.ArrayList;
 
-import static com.example.asus.subthreemvvm.base.BaseAppCompatActivity.KEY_FRAGMENT;
-import static com.example.asus.subthreemvvm.base.BaseAppCompatActivity.KEY_TITLE;
-
 public class SearchMovieActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
 
@@ -36,6 +33,7 @@ public class SearchMovieActivity extends AppCompatActivity implements SearchView
     private RecyclerView rvSearchMovie;
     private ProgressBar pbSearchMovie;
     SearchView searchView;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -47,13 +45,6 @@ public class SearchMovieActivity extends AppCompatActivity implements SearchView
         rvSearchMovie = findViewById(R.id.searchactivity_rv);
         pbSearchMovie = findViewById(R.id.searchactivity_pb);
         rvSearchMovie.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-
-
-
-//        searchMovieViewModel = ViewModelProviders.of(this).get(SearchMovieViewModel.class);
-//        searchMovieViewModel.setMovieSearch(getResources().getString(R.string.code_language), " ");
-//        searchMovieViewModel.getSearchMovies().observe(this, getSearchMovie);
-
 
     }
 
@@ -97,7 +88,7 @@ public class SearchMovieActivity extends AppCompatActivity implements SearchView
                 } catch (InterruptedException e) {
                     e.printStackTrace();
                 }
-            }else{
+            } else {
                 try {
                     showLoading(true);
                 } catch (InterruptedException e) {

@@ -3,11 +3,14 @@ package com.example.asus.subthreemvvm.database;
 import android.arch.persistence.room.ColumnInfo;
 import android.arch.persistence.room.Entity;
 import android.arch.persistence.room.PrimaryKey;
+import android.content.ContentValues;
 import android.os.Parcel;
 import android.os.Parcelable;
 
+
 @Entity(tableName = "favorite_movie")
 public class MovieModelDb implements Parcelable {
+
 
     @ColumnInfo(name = "category")
     private String category;
@@ -113,4 +116,25 @@ public class MovieModelDb implements Parcelable {
             return new MovieModelDb[size];
         }
     };
+
+
+    public static MovieModelDb fromContentValues(ContentValues values) {
+        final MovieModelDb movie = new MovieModelDb();
+        if (values.containsKey("id")) {
+            movie.id = values.getAsInteger("id");
+        }
+        if (values.containsKey("title")) {
+            movie.title = values.getAsString("title");
+        }
+
+        if (values.containsKey("poster_path")) {
+            movie.posterPath = values.getAsString("poster_path");
+        }
+
+        if (values.containsKey("vote_average")) {
+            movie.voteAverage = values.getAsDouble("vote_average");
+        }
+        return movie;
+    }
+
 }

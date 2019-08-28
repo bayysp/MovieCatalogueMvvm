@@ -26,8 +26,6 @@ public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdap
     private ArrayList<MovieModelDb> movieItems = new ArrayList<>();
     private Context context;
 
-//    private static final String BASE_URL_IMAGE = "https://image.tmdb.org/t/p/w185";
-
     public FavoriteMovieAdapter(Context context) {
         this.context = context;
     }
@@ -49,7 +47,7 @@ public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdap
     public void onBindViewHolder(@NonNull FavoriteMovieAdapter.ViewHolder viewHolder, int i) {
         final MovieModelDb item = movieItems.get(i);
 
-        Glide.with(context).load( item.getPosterPath()).into(viewHolder.ivPoster);
+        Glide.with(context).load(item.getPosterPath()).into(viewHolder.ivPoster);
         viewHolder.tvTitle.setText(item.getTitle());
         viewHolder.tvRating.setText(String.valueOf(item.getVoteAverage()));
 
@@ -62,7 +60,7 @@ public class FavoriteMovieAdapter extends RecyclerView.Adapter<FavoriteMovieAdap
                     MovieItem items = new MovieItem();
                     items.setId(item.getId());
                     items.setTitle(item.getTitle());
-                    items.setPosterPath( item.getPosterPath());
+                    items.setPosterPath(item.getPosterPath());
                     items.setOverview(item.getOverview());
                     items.setVoteAverage(item.getVoteAverage());
 

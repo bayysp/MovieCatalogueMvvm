@@ -85,8 +85,9 @@ public class SearchTvshowAdapter extends RecyclerView.Adapter<SearchTvshowAdapte
 
     public class ViewHolder extends RecyclerView.ViewHolder {
         ImageView ivPoster;
-        TextView tvTitle,tvRating;
+        TextView tvTitle, tvRating;
         CardView cvSearch;
+
         public ViewHolder(@NonNull View itemView) {
             super(itemView);
             cvSearch = itemView.findViewById(R.id.search_item_cv);

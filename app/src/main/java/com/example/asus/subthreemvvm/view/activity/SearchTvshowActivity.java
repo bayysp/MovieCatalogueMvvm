@@ -23,7 +23,7 @@ import com.example.asus.subthreemvvm.viewmodel.SearchTvshowViewModel;
 
 import java.util.ArrayList;
 
-public class SearchTvshowActivity extends AppCompatActivity implements SearchView.OnQueryTextListener{
+public class SearchTvshowActivity extends AppCompatActivity implements SearchView.OnQueryTextListener {
 
     private SearchTvshowViewModel searchTvshowViewModel;
     private SearchTvshowAdapter searchTvshowAdapter;
@@ -40,10 +40,12 @@ public class SearchTvshowActivity extends AppCompatActivity implements SearchVie
         getSupportActionBar().setDisplayShowHomeEnabled(true);
         searchTvshowAdapter = new SearchTvshowAdapter(getApplicationContext());
 
-        rvSearchTvshow = findViewById(R.id.searchactivity_rv);
-        pbSearchTvshow = findViewById(R.id.searchactivity_pb);
+        rvSearchTvshow = findViewById(R.id.searchactivitytv_rv);
+        pbSearchTvshow = findViewById(R.id.searchactivitytv_pb);
+
+
         rvSearchTvshow.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-        searchData("");
+
     }
 
     @Override
@@ -57,9 +59,14 @@ public class SearchTvshowActivity extends AppCompatActivity implements SearchVie
     }
 
     private void searchData(String keyword) {
+        searchTvshowAdapter = new SearchTvshowAdapter(getApplicationContext());
+        searchTvshowAdapter.notifyDataSetChanged();
+
         searchTvshowViewModel = ViewModelProviders.of(this).get(SearchTvshowViewModel.class);
         searchTvshowViewModel.setTvshowSearch(getResources().getString(R.string.code_language), keyword);
-        searchTvshowViewModel.getSearchMovies().observe(this, getTvshowSearch);
+        searchTvshowViewModel.getSearchTvshow().observe(this, getTvshowSearch);
+
+        rvSearchTvshow.setAdapter(searchTvshowAdapter);
 
     }
 
@@ -67,12 +74,8 @@ public class SearchTvshowActivity extends AppCompatActivity implements SearchVie
         @Override
         public void onChanged(@Nullable ArrayList<TvshowItem> tvshowItems) {
             if (tvshowItems != null) {
-                Log.d("GetSearchMovieData", String.valueOf(tvshowItems));
-                searchTvshowAdapter = new SearchTvshowAdapter(getApplicationContext());
+                Log.d("GetSearchTvData", String.valueOf(tvshowItems));
                 searchTvshowAdapter.setData(tvshowItems);
-
-                rvSearchTvshow.setLayoutManager(new LinearLayoutManager(getApplicationContext()));
-                rvSearchTvshow.setAdapter(searchTvshowAdapter);
 
                 try {
                     showLoading(false);
@@ -112,6 +115,7 @@ public class SearchTvshowActivity extends AppCompatActivity implements SearchVie
         } catch (Exception e) {
             Log.d("SeachTvshowActivity", "OptionsMenu - onQueryTextChange - Error");
             Toast.makeText(getApplicationContext(), "Data Tidak Ditemukan", Toast.LENGTH_SHORT).show();
+            Log.e("SearchTvShowActivity", e.getMessage());
             return false;
         }
     }
