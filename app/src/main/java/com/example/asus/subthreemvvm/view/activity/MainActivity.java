@@ -1,6 +1,7 @@
 package com.example.asus.subthreemvvm.view.activity;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.database.Cursor;
 import android.os.Bundle;
 import android.provider.Settings;
@@ -20,13 +21,16 @@ import com.example.asus.subthreemvvm.MovieCatalogueProvider;
 import com.example.asus.subthreemvvm.R;
 import com.example.asus.subthreemvvm.adapter.MovieAdapter;
 import com.example.asus.subthreemvvm.notifications.DailyReminderReceiver;
-import com.example.asus.subthreemvvm.scheduler.MovieReleaseTask;
 import com.example.asus.subthreemvvm.view.fragment.FavoriteFragment;
 import com.example.asus.subthreemvvm.view.fragment.MovieFragment;
 import com.example.asus.subthreemvvm.view.fragment.TvshowFragment;
 
 import static com.example.asus.subthreemvvm.base.BaseAppCompatActivity.KEY_FRAGMENT;
 import static com.example.asus.subthreemvvm.base.BaseAppCompatActivity.KEY_TITLE;
+import static com.example.asus.subthreemvvm.utils.Utils.KEY_DAILY_REMINDER;
+import static com.example.asus.subthreemvvm.utils.Utils.KEY_RELEASE_REMINDER;
+import static com.example.asus.subthreemvvm.utils.Utils.STATE_DAILY_REMINDER;
+import static com.example.asus.subthreemvvm.utils.Utils.STATE_RELEASE_REMINDER;
 
 public class MainActivity extends AppCompatActivity implements BottomNavigationView.OnNavigationItemSelectedListener {
 
@@ -35,12 +39,13 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
     Fragment selectedFragment = new MovieFragment();
     String fragmentParam = "movie";
     MovieAdapter movieAdapter;
-
+    boolean setStateDailyReminder, setStateReleaseReminder;
 
     String title = "Home";
 
-    DailyReminderReceiver dailyReminderReceiver = new DailyReminderReceiver();
-    MovieReleaseTask movieReleaseTask;
+    private SharedPreferences spDailyReminder, spReleaseReminder;
+
+    DailyReminderReceiver dailyReminderReceiver;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,11 +65,11 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             setTitle(title);
         }
 
+        dailyReminderReceiver = new DailyReminderReceiver();
+        setPreferences();
+
         movieAdapter = new MovieAdapter(getApplicationContext());
 
-        dailyReminderReceiver.setAlarmNotification(getApplicationContext(), dailyReminderReceiver.EXTRA_TYPE_PREF, "07:00", "DAILY REMINDER");
-        movieReleaseTask = new MovieReleaseTask(this);
-        movieReleaseTask.createPeriodicTask();
     }
 
     private boolean loadFragment(Fragment fragment) {
@@ -77,6 +82,16 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
             return true;
         }
         return false;
+    }
+
+    private void setPreferences() {
+        spDailyReminder = getSharedPreferences(KEY_DAILY_REMINDER, MODE_PRIVATE);
+        setStateDailyReminder = spDailyReminder.getBoolean(STATE_DAILY_REMINDER, false);
+        Log.d("MainActivity", "preference daily value is : " + setStateDailyReminder);
+
+        spReleaseReminder = getSharedPreferences(KEY_RELEASE_REMINDER, MODE_PRIVATE);
+        setStateReleaseReminder = spReleaseReminder.getBoolean(STATE_RELEASE_REMINDER, false);
+        Log.d("MainActivity", "preference release value is : " + setStateReleaseReminder);
     }
 
     @Override
@@ -115,13 +130,15 @@ public class MainActivity extends AppCompatActivity implements BottomNavigationV
 
         if (item.getItemId() == R.id.search_menu_activity) {
             if (fragmentParam.equals("movie")) {
+                Log.d("MainActivity","move into SearchMovieActivity");
                 Intent intent = new Intent(this, SearchMovieActivity.class);
                 intent.putExtra("fragmentparam", fragmentParam);
                 Log.d("MainActivityOptions", "Move to SearchMovieActivity");
 
                 startActivity(intent);
             } else {
-                Intent intent = new Intent(this, SearchMovieActivity.class);
+                fragmentParam = "tvshow";
+                Intent intent = new Intent(this, SearchTvshowActivity.class);
                 intent.putExtra("fragmentparam", fragmentParam);
                 Log.d("MainActivityOptions", "Move to SearchTvshowActivity");
 

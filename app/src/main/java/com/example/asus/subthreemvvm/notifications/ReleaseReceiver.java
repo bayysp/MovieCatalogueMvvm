@@ -1,6 +1,9 @@
 package com.example.asus.subthreemvvm.notifications;
 
+import android.annotation.SuppressLint;
 import android.app.AlarmManager;
+import android.app.Notification;
+import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.content.BroadcastReceiver;
@@ -8,114 +11,163 @@ import android.content.Context;
 import android.content.Intent;
 import android.media.RingtoneManager;
 import android.net.Uri;
+import android.os.Build;
 import android.support.v4.app.NotificationCompat;
 import android.support.v4.content.ContextCompat;
 import android.util.Log;
-import android.widget.Toast;
 
 import com.example.asus.subthreemvvm.R;
-import com.example.asus.subthreemvvm.view.activity.MainActivity;
-import com.loopj.android.http.AsyncHttpClient;
-import com.loopj.android.http.AsyncHttpResponseHandler;
-
-import org.json.JSONObject;
+import com.example.asus.subthreemvvm.model.MovieItem;
+import com.example.asus.subthreemvvm.model.MovieResponse;
+import com.example.asus.subthreemvvm.service.MovieService;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.List;
 
-import cz.msebera.android.httpclient.Header;
+import retrofit2.Call;
+import retrofit2.Callback;
+import retrofit2.Response;
 
 public class ReleaseReceiver extends BroadcastReceiver {
 
-    private final static int NOTIFICATION_ID = 101;
+    private static final String TAG = "ReleaseReceiver";
+    private static final String ID = "id";
+    private static final String TITLE = "title";
 
-    private static final String EXTRA_MESSAGE_PREF = "message";
-    private static final String EXTRA_TYPE_PREF = "type";
+    private List<MovieItem> listMovie = new ArrayList<>();
+    private List<MovieItem> mList = new ArrayList<>();
+    private int id;
+    private int delay;
 
     @Override
-    public void onReceive(final Context context, Intent intent) {
-        AsyncHttpClient client = new AsyncHttpClient();
+    public void onReceive(Context context, Intent intent) {
+        Log.d(TAG,"onReceive");
+        id = intent.getIntExtra(ID,0);
+        String title = intent.getStringExtra(TITLE);
+        setMovieRelease(context,id,title);
+    }
 
-        Date dateToday = Calendar.getInstance().getTime();
-        SimpleDateFormat dateFormat = new SimpleDateFormat("yyyy-MM-dd");
-        String dateFormatted = dateFormat.format(dateToday);
+    public void checkMovieRelease(final Context context){
+        Log.d(TAG,"checkMovieRelease called");
 
+        @SuppressLint("SimpleDateFormat")
+        SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd");
+        Date date = new Date();
+        final String dateNow = simpleDateFormat.format(date);
 
-        String urlApi = "https://api.themoviedb.org/3/discover/movie?api_key=05faacecb1bb8a123ad56542b1708bad&primary_release_date.gte=" + dateFormatted + "&primary_release_date.lte=" + dateFormatted + "";
-        Log.e("ReleaseReceiver", "get from " + urlApi);
-        client.get(urlApi, new AsyncHttpResponseHandler() {
+        MovieService movieService = new MovieService();
+        movieService.getMovieApi().getNewReleaseMovie(dateNow,dateNow).enqueue(new Callback<MovieResponse>() {
             @Override
-            public void onSuccess(int statusCode, Header[] headers, byte[] responseBody) {
-                String result = new String(responseBody);
-                Log.d("ReleaseReceiver", "result is : " + result);
-                try {
-                    JSONObject responseObject = new JSONObject(result);
-                    String movieName = responseObject.getJSONArray("result").getJSONObject(0).getString("title");
+            public void onResponse(Call<MovieResponse> call, Response<MovieResponse> response) {
+                Log.d(TAG,"onresponse");
+                if (response.body() != null){
+                    Log.d(TAG,"onresponse not null");
 
-                    int idNotification = 501;
-                    String message = "Today Movie Release is " + movieName;
-                    sendNotifications(context, "MOVIE RELEASE", message, idNotification);
-                } catch (Exception e) {
-                    Log.e("ReleaseReceiver", "Error get API : " + e.getMessage());
+                    List<MovieItem> result = response.body().getResults();
+                    mList.clear();
+                    mList.addAll(result);
+
+                    for (MovieItem movieItem : mList){
+                        if (movieItem.getReleaseDate().equals(dateNow)){
+                            Log.d(TAG,"release today is equal");
+                            listMovie.add(movieItem);
+                        }else{
+                            Log.d(TAG,"release today not found");
+                        }
+                    }
+                    setReleaseNotification(context,listMovie);
+                }else{
+                    Log.d(TAG, "onResponse: not found");
                 }
+
+
             }
 
             @Override
-            public void onFailure(int statusCode, Header[] headers, byte[] responseBody, Throwable error) {
-                Log.d("ReleaseReceiver", "onFailure: " + error.toString());
+            public void onFailure(Call<MovieResponse> call, Throwable t) {
+                Log.d(TAG, "onFailure called");
             }
         });
-
     }
 
-    private void sendNotifications(Context context, String title, String message, int id) {
-        NotificationManager notificationManager = (NotificationManager) context.getSystemService(
-                Context.NOTIFICATION_SERVICE);
-        Intent intent = new Intent(context, MainActivity.class);
-        PendingIntent pendingIntent = PendingIntent.getActivity(context, id, intent, PendingIntent.FLAG_UPDATE_CURRENT);
-        Uri uriTone = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(context)
+    public void setReleaseNotification(Context context, List<MovieItem> movieItems) {
+        Log.d(TAG,"releaseNotification");
+
+        for (MovieItem movieItem : movieItems){
+            Calendar calendar = Calendar.getInstance();
+            calendar.set(Calendar.HOUR_OF_DAY, 8);
+            calendar.set(Calendar.MINUTE, 0);
+            calendar.set(Calendar.SECOND, 0);
+
+            AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
+            Intent intent = new Intent(context, ReleaseReceiver.class);
+            intent.putExtra(ID, id);
+            intent.putExtra(TITLE, movieItem.getTitle());
+            PendingIntent pendingIntent = PendingIntent.getBroadcast(context,
+                    id,
+                    intent, PendingIntent.FLAG_UPDATE_CURRENT);
+
+            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP,
+                    calendar.getTimeInMillis() + delay,
+                    AlarmManager.INTERVAL_DAY, pendingIntent);
+
+            id = id + 1;
+            delay = delay + 2000;
+            Log.d(TAG, "called movie " + id + " " + movieItem.getTitle());
+        }
+    }
+
+    public void setMovieRelease(Context context, int id, String title) {
+        Log.d(TAG,"setMovieRelease called");
+        String CHANNEL_ID = "Channel_Daily";
+        String CHANNEL_NAME = "Daily Reminder Alarm";
+
+        NotificationManager notificationManagerCompat = (NotificationManager) context.getSystemService(Context.NOTIFICATION_SERVICE);
+        Uri alarmSound = RingtoneManager.getDefaultUri(RingtoneManager.TYPE_NOTIFICATION);
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(context, CHANNEL_ID)
                 .setSmallIcon(R.drawable.ic_movie_black)
                 .setContentTitle(title)
-                .setContentText(message)
-                .setContentIntent(pendingIntent)
+                .setContentText("Release Movie Today")
                 .setColor(ContextCompat.getColor(context, android.R.color.transparent))
                 .setVibrate(new long[]{1000, 1000, 1000, 1000, 1000})
-                .setAutoCancel(true)
-                .setSound(uriTone);
-        if (notificationManager != null) {
-            notificationManager.notify(id, builder.build());
+                .setSound(alarmSound);
+
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+
+            NotificationChannel channel = new NotificationChannel(CHANNEL_ID,
+                    CHANNEL_NAME,
+                    NotificationManager.IMPORTANCE_DEFAULT);
+
+            channel.enableVibration(true);
+            channel.setVibrationPattern(new long[]{1000, 1000, 1000, 1000, 1000});
+
+            builder.setChannelId(CHANNEL_ID);
+
+            if (notificationManagerCompat != null) {
+                notificationManagerCompat.createNotificationChannel(channel);
+            }
         }
+
+        Notification notification = builder.build();
+
+        if (notificationManagerCompat != null) {
+            notificationManagerCompat.notify(id, notification);
+        }
+
     }
 
-    public void setAlarm(Context context, String type, String time, String message) {
-        cancelAlarm(context);
+    public void setOffReleaseNotification(Context context) {
+        Log.d(TAG, "cancelUpdateNotification: called");
+
         AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
         Intent intent = new Intent(context, ReleaseReceiver.class);
-        intent.putExtra(EXTRA_MESSAGE_PREF, message);
-        intent.putExtra(EXTRA_TYPE_PREF, type);
-        String timeArray[] = time.split(":");
-        Calendar calendar = Calendar.getInstance();
-        calendar.set(Calendar.HOUR_OF_DAY, Integer.parseInt(timeArray[0]));
-        calendar.set(Calendar.MINUTE, Integer.parseInt(timeArray[1]));
-        calendar.set(Calendar.SECOND, 0);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 601, intent, 0);
-        if (alarmManager != null) {
-            alarmManager.setInexactRepeating(AlarmManager.RTC_WAKEUP, calendar.getTimeInMillis(), AlarmManager.INTERVAL_DAY, pendingIntent);
-        }
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(context,
+                202,
+                intent, PendingIntent.FLAG_CANCEL_CURRENT);
 
-        Toast.makeText(context, "Release Reminder Alarm Get OFF", Toast.LENGTH_SHORT).show();
-    }
-
-
-    public void cancelAlarm(Context context) {
-        AlarmManager alarmManager = (AlarmManager) context.getSystemService(Context.ALARM_SERVICE);
-        Intent intent = new Intent(context, ReleaseReceiver.class);
-        PendingIntent pendingIntent = PendingIntent.getBroadcast(context, 601, intent, 0);
-        if (alarmManager != null) {
-            alarmManager.cancel(pendingIntent);
-        }
-        Toast.makeText(context, "Release Reminder Alarm Get OFF", Toast.LENGTH_SHORT).show();
+        alarmManager.cancel(pendingIntent);
     }
 }

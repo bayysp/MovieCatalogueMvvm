@@ -3,6 +3,10 @@
     package="com.example.asus.subthreemvvm">
 
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.VIBRATE" />
+    <uses-permission android:name="android.permission.WAKE_LOCK" />
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
 
     <permission
         android:name="com.example.asus.subthreemvvm.READ_DATABASE"
@@ -54,6 +58,15 @@
             android:exported="true"
             android:readPermission="com.example.asus.subthreemvvm.READ_DATABASE"
             android:writePermission="com.example.asus.subthreemvvm.WRITE_DATABASE" />
+
+        <receiver
+            android:name=".notifications.DailyReminderReceiver"
+            android:enabled="true"
+            android:exported="true" />
+
+        <receiver android:name=".notifications.ReleaseReceiver"
+            android:enabled="true"
+            android:exported="true"/>
 
     </application>
 

@@ -5,11 +5,8 @@ import android.arch.lifecycle.MutableLiveData;
 import android.arch.lifecycle.ViewModel;
 import android.util.Log;
 
-import com.example.asus.subthreemvvm.model.MovieItem;
-import com.example.asus.subthreemvvm.model.MovieResponse;
 import com.example.asus.subthreemvvm.model.TvshowItem;
 import com.example.asus.subthreemvvm.model.TvshowResponse;
-import com.example.asus.subthreemvvm.service.MovieService;
 import com.example.asus.subthreemvvm.service.TvshowService;
 
 import java.util.ArrayList;
@@ -28,7 +25,7 @@ public class SearchTvshowViewModel extends ViewModel {
     public void setTvshowSearch(String lang,String tvshowName){
         this.lang = lang;
         this.tvshowName = tvshowName;
-        if (this.tvshowName == null){
+        if (this.tvshowService == null){
             tvshowService = new TvshowService();
         }
 
@@ -38,17 +35,17 @@ public class SearchTvshowViewModel extends ViewModel {
                 TvshowResponse tvshowResponse = response.body();
                 if (tvshowResponse != null && tvshowResponse.getResults() != null){
                     ArrayList<TvshowItem> movieItems = tvshowResponse.getResults();
-                    Log.d("SearchMovieViewModel","onResponse success" + movieItems);
+                    Log.d("SearchTvshowViewModel","onResponse success" + movieItems);
                     listTvshowSearch.postValue(movieItems);
                 }
             }
 
             @Override
             public void onFailure(Call<TvshowResponse> call, Throwable t) {
-                Log.d("SearchMovieViewModel","onFailure " + t.getMessage());
+                Log.d("SearchTvshowViewModel","onFailure " + t.getMessage());
             }
         });
     }
 
-    public LiveData<ArrayList<TvshowItem>> getSearchMovies(){return listTvshowSearch;}
+    public LiveData<ArrayList<TvshowItem>> getSearchTvshow(){return listTvshowSearch;}
 }

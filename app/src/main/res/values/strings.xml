@@ -42,14 +42,14 @@
     <string name="input_text">Input Text</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="appwidget_text">EXAMPLE</string>
-    <string name="add_widget">Add widget</string>
-    <string name="empty">Empty</string>
-    <string name="set_daily_reminder">SET DAILY REMINDER</string>
-    <string name="off">OFF</string>
-    <string name="set_release_reminder">SET RELEASE REMINDER</string>
-    <string name="reminder_settings">Reminder Settings</string>
+    <string name="hello_blank_fragment" translatable="false">Hello blank fragment</string>
+    <string name="appwidget_text" translatable="false">EXAMPLE</string>
+    <string name="add_widget" translatable="false">Add widget</string>
+    <string name="empty" translatable="false">Empty</string>
+    <string name="set_daily_reminder" translatable="false">SET DAILY REMINDER</string>
+    <string name="off" translatable="false">OFF</string>
+    <string name="set_release_reminder" translatable="false">SET RELEASE REMINDER</string>
+    <string name="reminder_settings" translatable="false">Reminder Settings</string>
 
     <!-- TODO: Remove or change this placeholder text -->
 
